@@ -1,6 +1,4 @@
-﻿using DependencyInjection.Navigator.Application.Map;
-
-namespace DependencyInjection.Navigator.Application;
+﻿namespace DependencyInjection.Navigator.Application;
 
 public enum RouteStrategy
 {
@@ -12,30 +10,26 @@ public enum RouteStrategy
 public class Route
 {
     private const double EarthRadius = 6371;
-
-    public Route(double sourceLatitude, double sourceLongitude, double destinationLatitude, double destinationLongitude)
+    
+    public Route(Location startLocation, Location endLocation)
     {
-        SourcePoint = new Location(sourceLatitude, sourceLongitude);
-        DestinationPoint = new Location(destinationLatitude, destinationLongitude);
+        StartLocation = startLocation;
+        EndLocation = endLocation;
+        Directions = new List<string>();
     }
 
-    public Route(Location sourcePoint, Location destinationPoint)
-    {
-        SourcePoint = sourcePoint;
-        DestinationPoint = destinationPoint;
-    }
-
-    public Location SourcePoint { get; init; }
-    public Location DestinationPoint { get; init; }
+    public Location StartLocation { get; private set; }
+    public Location EndLocation { get; private set; }
+    public List<string> Directions { get; private set; }
 
     public double Distance
     {
         get
         {
-            var sourceLatitude = DegreesToRadians(SourcePoint.Latitude);
-            var sourceLongitude = DegreesToRadians(SourcePoint.Longitude);
-            var destinationLatitude = DegreesToRadians(DestinationPoint.Latitude);
-            var destinationLongitude = DegreesToRadians(DestinationPoint.Longitude);
+            var sourceLatitude = DegreesToRadians(StartLocation.Coordinates.Latitude);
+            var sourceLongitude = DegreesToRadians(StartLocation.Coordinates.Longitude);
+            var destinationLatitude = DegreesToRadians(EndLocation.Coordinates.Latitude);
+            var destinationLongitude = DegreesToRadians(EndLocation.Coordinates.Longitude);
 
             var deltaLatitude = destinationLatitude - sourceLatitude;
             var deltaLongitude = destinationLongitude - sourceLongitude;
@@ -51,12 +45,21 @@ public class Route
             return distance;
         }
     }
+    
+    public void CalculateRoute()
+    {
+
+    }
+    
+    public void UpdateDestination(Location newDestination)
+    {
+        EndLocation = newDestination;
+    }
 
     public override string ToString()
     {
-        return $"Land Image 400 x 400 for " +
-               $"start point: {SourcePoint}" +
-               $", end point: {DestinationPoint}. " +
+        return $"start point: {StartLocation}" +
+               $", end point: {EndLocation}. " +
                $"Distance is {Distance}.";
     }
 

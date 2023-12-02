@@ -1,5 +1,4 @@
 ﻿using DependencyInjection.Navigator.Application;
-using DependencyInjection.Navigator.Application.Map;
 using DependencyInjection.WebApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using RouteStrategy = DependencyInjection.Navigator.Application.RouteStrategy;
@@ -20,14 +19,14 @@ public class NavigatorController: ControllerBase
     [HttpGet(Name="GetRoute")]
     public GetRouteResponse GetRoute([FromQuery]GetRouteRequest request)
     {
-        var startPoint = new Location(
-            request.StartLatitude,
-            request.StartLongitude
-            );
+        var startPoint = new Location( 
+            new Coordinates(request.StartLatitude, request.StartLongitude)
+            , new Address("","","","")
+        );
         
-        var endPoint = new Location(
-            request.EndLatitude,
-            request.EndLongitude
+        var endPoint = new Location( 
+            new Coordinates(request.EndLatitude, request.EndLongitude)
+            , new Address("","","","")
         );
 
         var strategy = request.RouteStrategy;
@@ -46,8 +45,8 @@ public class NavigatorController: ControllerBase
     [HttpGet(Name="GetLocation")]
     public GetLocationResponse GetLocation([FromQuery]GetLocationRequest request)
     {
-        var location = _navigator.GetLocationByName(
-            request.Name
+        var location = _navigator.GetLocationByAddress(
+            new Address("street", "city", "state", "country")
         );
         var name = location?.ToString() ?? "";
         var response = new GetLocationResponse(name);
@@ -58,9 +57,9 @@ public class NavigatorController: ControllerBase
     [HttpGet(Name="GetLocationImage")]
     public GetLocationImageResponse GetLocationImage([FromQuery]GetLocationImageRequest request)
     {
-        var point = new Location(
-            request.Latitude,
-            request.Longitude
+        var point = new Location( 
+            new Coordinates(request.Latitude, request.Longitude)
+            , new Address("","","","")
         );
         
         var locationDescription = _navigator.GetImageByLocation(

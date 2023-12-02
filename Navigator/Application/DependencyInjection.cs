@@ -1,6 +1,5 @@
-﻿using DependencyInjection.Navigator.Application.Map;
-using DependencyInjection.Navigator.Application.Map.Map;
-using DependencyInjection.Navigator.Application.Router;
+﻿using DependencyInjection.Navigator.Application.Router;
+using DependencyInjection.Navigator.Data.Map;
 
 namespace DependencyInjection.Navigator.Application;
 

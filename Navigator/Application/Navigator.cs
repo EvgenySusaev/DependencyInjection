@@ -1,5 +1,4 @@
-﻿using DependencyInjection.Navigator.Application.Map;
-using DependencyInjection.Navigator.Application.Router;
+﻿using DependencyInjection.Navigator.Application.Router;
 
 namespace DependencyInjection.Navigator.Application;
 
@@ -20,12 +19,12 @@ public class Navigator
 
     public void SaveLocation(Location location)
     {
-        
+        _map.StoreLocation(location);
     }
     
-    public Location? GetLocationByName(string name)
+    public Location? GetLocationByAddress(Address address)
     {
-        return _map.FindLocation(name);
+        return _map.FindLocationBy(address);
     }
     
     public string GetImageByLocation(Location location)
