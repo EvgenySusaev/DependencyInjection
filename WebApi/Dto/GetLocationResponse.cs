@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection.Navigator.Dto;
+﻿namespace DependencyInjection.WebApi.Dto;
 
 public class GetLocationResponse
 {

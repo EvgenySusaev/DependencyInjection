@@ -1,6 +1,6 @@
-﻿namespace DependencyInjection.Navigator.Dto;
+﻿namespace DependencyInjection.WebApi.Dto;
 
-public class GetLocationRequest
+public class GetLocationImageRequest
 {
     public double Latitude { get; private set; }
     public double Longitude { get; private set; }
