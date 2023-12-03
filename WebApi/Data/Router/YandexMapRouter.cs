@@ -1,5 +1,7 @@
 ﻿using DependencyInjection.Navigator.Application;
-using Route = DependencyInjection.Navigator.Application.Route;
+using DependencyInjection.Navigator.Application.GeoLocation;
+using DependencyInjection.Navigator.Application.Router;
+using Route = DependencyInjection.Navigator.Application.Router.Route;
 
 namespace DependencyInjection.WebApi.Data.Router;
 

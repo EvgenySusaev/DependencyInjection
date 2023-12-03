@@ -1,7 +1,9 @@
 ﻿using DependencyInjection.Navigator.Application;
+using DependencyInjection.Navigator.Application.GeoLocation;
+using DependencyInjection.Navigator.Application.Map;
 using DependencyInjection.WebApi.Dto;
 using Microsoft.AspNetCore.Mvc;
-using RouteStrategy = DependencyInjection.Navigator.Application.RouteStrategy;
+using RouteStrategy = DependencyInjection.Navigator.Application.Router.RouteStrategy;
 
 namespace DependencyInjection.WebApi;
 

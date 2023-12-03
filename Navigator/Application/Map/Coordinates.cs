@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection.Navigator.Application;
+﻿namespace DependencyInjection.Navigator.Application.Map;
 
 public class Coordinates: ValueObject
 {

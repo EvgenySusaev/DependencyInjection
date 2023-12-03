@@ -1,4 +1,8 @@
-﻿namespace DependencyInjection.Navigator.Application;
+﻿using DependencyInjection.Navigator.Application.Map;
+using DependencyInjection.Navigator.Application.Router;
+using Route = DependencyInjection.Navigator.Application.Router.Route;
+
+namespace DependencyInjection.Navigator.Application;
 
 public class Navigator
 {

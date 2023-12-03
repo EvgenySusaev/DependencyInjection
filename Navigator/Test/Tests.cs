@@ -1,4 +1,5 @@
-﻿using DependencyInjection.Navigator.Application;
+﻿using DependencyInjection.Navigator.Application.Map;
+using DependencyInjection.Navigator.Application.Router;
 using NUnit.Framework;
 
 namespace DependencyInjection.Navigator.Test;

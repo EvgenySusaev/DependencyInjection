@@ -1,4 +1,6 @@
 ﻿using DependencyInjection.Navigator.Application;
+using DependencyInjection.Navigator.Application.GeoLocation;
+using DependencyInjection.Navigator.Application.Map;
 
 namespace DependencyInjection.WebApi.Data.Map;
 
