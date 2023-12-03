@@ -26,8 +26,6 @@ public class Tests
         
         _navigator.SaveLocation(startLocation);
         _navigator.SaveLocation(endLocation);
-        
-        
     }
     [Test]
     public void GetRoute()

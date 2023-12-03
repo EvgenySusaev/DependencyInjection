@@ -1,4 +1,4 @@
-﻿namespace DependencyInjection.Navigator.Application.Router;
+﻿namespace DependencyInjection.Navigator.Application;
 
 public interface IMapRouter
 {

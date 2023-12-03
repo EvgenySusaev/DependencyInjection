@@ -1,6 +1,4 @@
-﻿using DependencyInjection.Navigator.Application.Router;
-
-namespace DependencyInjection.Navigator.Application;
+﻿namespace DependencyInjection.Navigator.Application;
 
 public class Navigator
 {

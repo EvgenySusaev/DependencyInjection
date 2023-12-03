@@ -1,18 +1,19 @@
 ﻿using DependencyInjection.Navigator.Application;
 
-namespace DependencyInjection.Navigator.Data.Map;
+namespace DependencyInjection.WebApi.Data.Map;
 
-public class GoogleMap : IMap
+public class YandexMap : IMap
 {
     private readonly List<Location> _locations = new List<Location>();
 
-    public GoogleMap()
+    public YandexMap()
     {
     }
 
     public Coordinates? FindGeolocationBy(Address address)
     {
-        Location location = _locations.FirstOrDefault(l => l.Address == address);
+        Location location = _locations.FirstOrDefault(l => l.Address == address
+        );
         return location?.Coordinates;
     }
     
@@ -24,7 +25,7 @@ public class GoogleMap : IMap
     
     public string GetLocationImage(Location location)
     {
-        return $"Image of {location} from GoogleMap";
+        return $"Image of {location} from YandexMap";
     }
 
     public void StoreLocation(Location location)

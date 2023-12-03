@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 //     )
 // );
 
-DependencyInjection.Navigator.Application.DependencyInjection.Load(builder.Services);
+DependencyInjection.WebApi.DependencyInjection.Load(builder.Services);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
