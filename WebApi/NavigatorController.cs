@@ -1,6 +1,4 @@
-﻿using DependencyInjection.Navigator.Application;
-using DependencyInjection.Navigator.Application.GeoLocation;
-using DependencyInjection.Navigator.Application.Map;
+﻿using DependencyInjection.Navigator.Application.Map;
 using DependencyInjection.WebApi.Dto;
 using Microsoft.AspNetCore.Mvc;
 using RouteStrategy = DependencyInjection.Navigator.Application.Router.RouteStrategy;
@@ -18,58 +16,63 @@ public class NavigatorController: ControllerBase
         _navigator = navigator;
     }
     
-    [HttpGet(Name="GetRoute")]
-    public GetRouteResponse GetRoute([FromQuery]GetRouteRequest request)
+    [HttpGet(Name="GetRouteByAddresses")]
+    public GetRouteResponse GetRouteByAddresses([FromQuery]GetRouteByAddressesRequest request)
     {
-        var startPoint = new Location( 
-            new Coordinates(request.StartLatitude, request.StartLongitude)
-            , new Address("","","","")
-        );
+        var origin = new Address(
+            request.OriginStreet,
+            request.OriginCity,
+            request.OriginState,
+            request.OriginCountry
+            );
         
-        var endPoint = new Location( 
-            new Coordinates(request.EndLatitude, request.EndLongitude)
-            , new Address("","","","")
-        );
-
-        var strategy = request.RouteStrategy;
+        var destination = new Address(
+            request.DestinationStreet,
+            request.DestinationCity,
+            request.DestinationState,
+            request.DestinationCountry
+            );
         
         var routeDescription = _navigator.GetRoute(
-            startPoint,
-            endPoint,
-            (RouteStrategy)strategy
-            );
+            origin,
+            destination,
+            request.RouteStrategy
+        );
 
         var response = new GetRouteResponse(routeDescription.ToString());
-
         return response;
     }
     
-    [HttpGet(Name="GetLocation")]
-    public GetLocationResponse GetLocation([FromQuery]GetLocationRequest request)
+    [HttpGet(Name="GetRouteByCoordinates")]
+    public GetRouteResponse GetRouteByCoordinates([FromQuery]GetRouteByCoordinatesRequest request)
     {
-        var location = _navigator.GetLocationByAddress(
-            new Address("street", "city", "state", "country")
+        var origin = new Coordinates(request.OriginLatitude, request.OriginLongitude);
+        var destination = new Coordinates(request.DestinationLatitude, request.DestinationLongitude);
+
+        var route = _navigator.GetRoute(
+            origin,
+            destination,
+            request.RouteStrategy
         );
-        var name = location?.ToString() ?? "";
-        var response = new GetLocationResponse(name);
 
+        var response = new GetRouteResponse(route.ToString());
         return response;
     }
     
-    [HttpGet(Name="GetLocationImage")]
-    public GetLocationImageResponse GetLocationImage([FromQuery]GetLocationImageRequest request)
+    [HttpGet(Name="GetLocationByAddress")]
+    public GetLocationResponse GetLocationByAddress([FromQuery]GetLocationRequest request)
     {
-        var point = new Location( 
-            new Coordinates(request.Latitude, request.Longitude)
-            , new Address("","","","")
+        var address = new Address(
+            request.Street,
+            request.City,
+            request.State,
+            request.Country
         );
         
-        var locationDescription = _navigator.GetImageByLocation(
-            point
-        );
-
-        var response = new GetLocationImageResponse(locationDescription);
-
+        var location = _navigator.GetLocationBy(address);
+        var name = location?.ToString() ?? "";
+        
+        var response = new GetLocationResponse(name);
         return response;
     }
 }

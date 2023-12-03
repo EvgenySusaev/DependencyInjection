@@ -16,4 +16,9 @@ public class Coordinates: ValueObject
         yield return Latitude;
         yield return Longitude;
     }
+
+    public override string ToString()
+    {
+        return $"({Latitude}\u00b0, {Longitude}\u00b0)";
+    }
 }

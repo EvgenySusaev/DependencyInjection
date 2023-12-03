@@ -2,8 +2,6 @@
 
 public interface IMap
 {
-    public Coordinates? FindGeolocationBy(Address address);
-    public Location? FindLocationBy(Address address);
-    public string GetLocationImage(Location location);
+    public Location? FindLocationByAddress(Address address);
     public void StoreLocation(Location location);
 }

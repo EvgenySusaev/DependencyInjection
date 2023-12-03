@@ -13,25 +13,23 @@ public class Route
 {
     private const double EarthRadius = 6371;
     
-    public Route(Location startLocation, Location endLocation)
+    public Route(Coordinates startCoordinates, Coordinates endCoordinates)
     {
-        StartLocation = startLocation;
-        EndLocation = endLocation;
-        Directions = new List<string>();
+        StartCoordinates = startCoordinates;
+        EndCoordinates = endCoordinates;
     }
 
-    public Location StartLocation { get; private set; }
-    public Location EndLocation { get; private set; }
-    public List<string> Directions { get; private set; }
+    public Coordinates StartCoordinates { get; private set; }
+    public Coordinates EndCoordinates { get; private set; }
 
     public double Distance
     {
         get
         {
-            var sourceLatitude = DegreesToRadians(StartLocation.Coordinates.Latitude);
-            var sourceLongitude = DegreesToRadians(StartLocation.Coordinates.Longitude);
-            var destinationLatitude = DegreesToRadians(EndLocation.Coordinates.Latitude);
-            var destinationLongitude = DegreesToRadians(EndLocation.Coordinates.Longitude);
+            var sourceLatitude = DegreesToRadians(StartCoordinates.Latitude);
+            var sourceLongitude = DegreesToRadians(StartCoordinates.Longitude);
+            var destinationLatitude = DegreesToRadians(EndCoordinates.Latitude);
+            var destinationLongitude = DegreesToRadians(EndCoordinates.Longitude);
 
             var deltaLatitude = destinationLatitude - sourceLatitude;
             var deltaLongitude = destinationLongitude - sourceLongitude;
@@ -47,22 +45,45 @@ public class Route
             return distance;
         }
     }
-    
-    public void CalculateRoute()
-    {
 
+    public double Direction
+    {
+        get{
+            // Convert latitude and longitude from degrees to radians
+            double phi1 = DegreesToRadians(StartCoordinates.Latitude);
+            double lambda1 = DegreesToRadians(StartCoordinates.Longitude);
+            double phi2 = DegreesToRadians(EndCoordinates.Latitude);
+            double lambda2 = DegreesToRadians(EndCoordinates.Longitude);
+
+            // Calculate the difference in longitudes
+            double deltaLambda = lambda2 - lambda1;
+
+            // Calculate the bearing using the atan2 function
+            double y = Math.Sin(deltaLambda) * Math.Cos(phi2);
+            double x = Math.Cos(phi1) * Math.Sin(phi2) - Math.Sin(phi1) * Math.Cos(phi2) * Math.Cos(deltaLambda);
+            double bearing = Math.Atan2(y, x);
+
+            // Convert the bearing from radians to degrees
+            bearing = RadiansToDegrees(bearing);
+
+            // Normalize the result to the range [0, 360)
+            bearing = (bearing + 360) % 360;
+
+            return bearing;
+        }
     }
     
-    public void UpdateDestination(Location newDestination)
+    public void UpdateDestination(Coordinates newDestination)
     {
-        EndLocation = newDestination;
+        EndCoordinates = newDestination;
     }
 
     public override string ToString()
     {
-        return $"start point: {StartLocation}" +
-               $", end point: {EndLocation}. " +
-               $"Distance is {Distance}.";
+        return $"start point: {StartCoordinates}, " +
+               $"end point: {EndCoordinates}. " +
+               $"Distance is {Distance}. " +
+               $"Direction is {Direction}";
     }
 
     private static double DegreesToRadians(double degrees)
