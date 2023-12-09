@@ -65,7 +65,7 @@ public class NavigatorController: ControllerBase
         var address = new Address(
             request.Street,
             request.City,
-            request.State,
+            request.Region,
             request.Country
         );
         

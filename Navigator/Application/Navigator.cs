@@ -5,17 +5,16 @@ using Route = DependencyInjection.Navigator.Application.Router.Route;
 
 namespace DependencyInjection.Navigator.Application;
 
-public class Navigator
+public record Navigator
 {
     private readonly IMap _map;
     private readonly IRouter _router;
-
+    
     public Navigator(IMap map, IRouter router)
     {
-        _map = map;
-        _router = router;
+        _map = map ?? throw new ArgumentNullException(nameof(map));
+        _router = router ?? throw new ArgumentNullException(nameof(router));
     }
-
     public void SaveLocation(Location location)
     {
         _map.StoreLocation(location);
@@ -25,41 +24,36 @@ public class Navigator
     {
         return _map.FindLocationByAddress(address);
     }
-    
+
     public Route GetRoute(Address origin, Address destination, RouteStrategy strategy)
     {
-        Location? startLocation = _map.FindLocationByAddress(origin);
-        Location? endLocation = _map.FindLocationByAddress(destination);
-
-        if (startLocation is null || endLocation is null)
-        {
-            throw new Exception();
-        }
+        Location? startLocation = GetVerifiedLocationByAddress(origin);
+        Location? endLocation = GetVerifiedLocationByAddress(destination);
         
         return _router.BuildRoute(
             startLocation.Coordinates,
             endLocation.Coordinates,
             strategy);
     }
-
+    
     public Route GetRoute(
-        string originStreet, string originCity, string originState, string originCountry,
-        string destinationStreet, string destinationCity, string destinationState, string destinationCountry,
+        string originStreet, string originCity, string originRegion, string originCountry,
+        string destinationStreet, string destinationCity, string destinationRegion, string destinationCountry,
         RouteStrategy strategy
-        )
+    )
     {
         Address originAddress = new Address(
             originStreet,
             originCity,
-            originState,
+            originRegion,
             originCountry
-            );
+        );
         Address destinationAddress = new Address(
             destinationStreet,
             destinationCity,
-            destinationState,
+            destinationRegion,
             destinationCountry
-            );
+        );
         
         return GetRoute(originAddress, destinationAddress, strategy);
     }
@@ -70,5 +64,16 @@ public class Navigator
             origin,
             destination,
             strategy);
+    }
+
+    private Location GetVerifiedLocationByAddress(Address address)
+    {
+        Location? location = _map.FindLocationByAddress(address);
+        if (location is null)
+        {
+            throw new Exception($"Could not find a location with the address: {address}");
+        }
+        
+        return location;
     }
 }
